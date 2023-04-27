@@ -1,0 +1,36 @@
+
+---
+- hosts: k8s-master
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: get join command
+      shell: kubeadm token create --print-join-command
+      register: join_command_raw
+      tags:
+       - token
+    - name: set join command
+      set_fact:
+        join_command: "{{ join_command_raw.stdout_lines[0] }}"
+      tags:
+       - token
+    - name: Displying the token to join
+      debug:
+       var: join_command
+      tags:
+       - token
+    - name: The way of adding nodes to Master node
+      debug:
+       msg: "copy the token from previuos task then run as follows "sudo kubeadm join <controller ip>:6443 --token .....""
+      tags:
+       - token
+
+
+- hosts: k8s-nodes
+  become: yes
+  tasks:
+    - name: join cluster
+      shell: "{{ join_command }} >> node_joined.txt"
+      args:
+        chdir: $HOME
+        creates: node_joined.txt
