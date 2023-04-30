@@ -1,0 +1,26 @@
+aws ec2 run-instances --image-id ami-xxxxxxxx --count 1 --instance-type t2.micro --key-name MyKeyPair --security-group-ids sg-903004f8 --subnet-id subnet-6e7f829e
+
+Imp Links:
+
+Python with WebScaping: https://www.youtube.com/watch?v=PXMJ6FS7llk
+Python in 5 Hours: https://www.youtube.com/watch?v=t8pPdKYpowI
+Python Programming with Mosh: https://www.youtube.com/watch?v=_uQrJ0TkZlc
+Python in Udemy:
+
+
+Git by Kunal: https://www.youtube.com/watch?v=apGV9Kg7ics
+Git by Programming with Mosh: https://www.youtube.com/watch?v=8JJ101D3knE
+
+
+Docker By freecodecamp: https://www.youtube.com/watch?v=9zUHg7xjIqQ
+
+
+Jenkins by edureka: https://www.youtube.com/watch?v=3a8KsB5wJDE
+
+
+Terraform by freecodecamp: https://www.youtube.com/watch?v=SLB_c_ayRMo
+Terraform Association exam by freecodecamp: https://www.youtube.com/watch?v=V4waklkBC38
+
+
+GitLab CI by freecodecamp: https://www.youtube.com/watch?v=PGyhBwLyK2U
+

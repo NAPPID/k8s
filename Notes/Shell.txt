@@ -1,0 +1,61 @@
+
+
+###########################   Shell scripting   #############################################################
+
+ps -f
+varname=value  ---> for setting environment variables, which are limited to that scope only
+
+export varname=value --> this can inherit env value to it's all child processes. It can't be done in viceversa. 
+
+we can exit from current shell by 'exit'  command from terminal. 
+
+echo $? ---> can display the status of previous command ran on shell. 
+		0 ---> for success
+		other then 0 ---> fail
+
+echo $$ ---> can display the current pid. 
+
+we can multiple commands from terminal 
+	cd /tmp && touch file1
+	cd /tmp; touch file1
+	cd /tmp/ && touch file2 && ls -l && cd ~
+	cd /tmp/; touch file3; ls -l; cd ~
+	ls -l | wc -l
+
+There are different ways to run the scripts. 
+
+~/<script-file>
+./<script-file>
+
+Instead of above two, we can run scripts with out mentioning the location by adding it's current path to variable $PATH
+Because when we run any command, first it look for paths which are defined in var $PATH.
+
+PATH=$PATH:/home/user  ---> By running this we are updating the $PATH by adding new location for look for file/commands.
+Afte this we are free to run scripts. 
+
+<script-file> -->enter
+
+#!/bin/bash
+
+val3=`expr $val1 + $val2'
+echo "value after this is $val3"
+
+
+cat /etc/shells ---> list all available shells in system
+
+chsh ---> changing the default shell to available shell
+
+(ls -l && adfghi) &> desc.txt  --> for redirecting both output and error into same file. 
+
+1> file_name 2>file_name
+1>file_name 2>&1
+&>file_name
+
+above three notations are same for redirecting both error output and success output. 
+
+vi editor---> presss 'esc'->: -> 'set number' -> enter
+cat -n /etc/shell
+
+head -n15 /etc/passwd | tail -5
+awk 'NR>=10 && NR<=15 {print}' /etc/passwd
+sed -n '11,15p' /etc/passwd

@@ -1,0 +1,585 @@
+
+
+Source: https://www.youtube.com/playlist?list=PL4_vx17AgknOxWtMKGIuFzkJImYwpoADX
+
+Prompts:
+	#: super user (root)
+	$: normal user
+System Information:
+	.uname: informtion about the system(uptime, architecture, OS name
+			uname-a, uname-r,hostname,uptime
+		uname --help
+		uname -rnpo
+Setting Hostname of System
+	hostnamectl
+	      hostnamectl set-hostname <hostname>
+		  cat /etc/hostname.
+Check who is logged inormation:
+	w 
+	whoami
+	uptime
+	hostname -i (this is very powerfulll and dangerous command , instead for we can use uname -n)
+	ifconfig
+	id
+	cat: for viewing the content
+		cat /etc/hostname
+		cat /etc/redhat-release
+	hostnamectl --> run -->get all info about hostname, runnig OS
+	hostnamectl --help
+	hostname <new hostname> --> this can change the hostname temporarly.
+	hostnamectl set-hostname <new hostname> --> This will change the hostname perminantly.
+	
+	ls -l --> Long listing
+	ls -a --> hidden files (starts with .)
+	ls -la
+	ls -lR -->  listing recursively 
+	
+	
+	##############  Files   ###################################
+	touch file1
+	touch file2 file3 file4
+	echo "Hello Linux" >file1 ---> content "Hello Linux" will be written into file1
+	touch file{1..20} ---> This will create files with the context "file" from 1 to 20.
+	If the file is already created then it's time stamp will be updated.
+	rm <file name>
+	rm -f <file-name> --> Removing files are forcefully.
+	rm -f file* -> Removing all files forcefully which are starts with file.
+	mkdir dir1 
+	mkdir dir1 dir2 dir3
+	mkdir dir1/a
+	mkdir dir1/b
+	mkdir dir1/d/e/f -->it will trigger error while execution.
+	mkdir -p dir1/d/e/
+	mkdir dir{1,2,3,4,5}
+	mkdir dir1/{a-z}-UUID
+	mkdir -p test_dir/newdir/test/abc{1..100}
+	rm -rf /var/tmp/test_*
+	rm -r/rm -rf <dir-name>
+	rm -rf --> can delete all the files and dir except hidden files (.file name)
+	cp 
+	mv
+	diff
+	rm, rm -f , rm -rf
+	
+	######################  View the content #############################
+	cat
+	less /boot/grub2/grub.cfg (Press q for quite)
+	more /boot/grub2/grub.cfg
+	head /boot/grub2/grub.cfg
+	cat /etc/redhat-release | less
+	head /boot/grub2/grub.cfg ---> first 10 lines of file
+	head -n15 /var/log/messages ---> first 15 lines of file
+	tail /boot/grub2/grub.cfg ---> last 10 lines of file
+	tail -n15 /var/log/messages ---> last 15 lines of file
+	**tail -f /var/log/messages ---> to see the live logs , this will keep the session on.
+	**tail -f /var/log/secure  ---> track the all the logs for users who are authenticated.
+	
+	#######################   Appending files ##############################
+	echo "Hello Linux" > file1  ----> Over written the content in file1
+	echo "Hello windows" >> file1  ----> Append the content in file1.
+	it's good practice to have backup of any file prior to modify.
+	cp file1 file1.back.
+	we can carry the permissions along with file by using the parameter -p.
+	cp -p file1 file1.back
+	cat /var/log/secure | grep 'Failed' > /tmp/secure_failed
+	cat /tmp/secure_failed
+	cat /var/log/secure | grep '192.168.1.6' >> /tmp/secure_failed
+	This will append the text stored in secure_failed.
+	***cat /etc/fstab > /tmp/fstab_copy
+	
+	#########################  File Structure  ###############################
+	
+	/ : Root directory
+	
+	/boot: Boot directory conatins files which are necessary for booting the server. it contains kernal file such as
+	"vmlinuz-4.18.0-240.el8.x86_64" and driver image file "initramfs-4.18.0-240.el8.x86_64.img". 
+	we can get same output when we run the command "uname -r".
+	/boot/grub2/grub.cfg file conatins the config of this linux machine such as which version of kernal has to pick , from where OS has to load and from which image drivers has to load. All these can be decided based upon this file.
+	
+	/dev: All the devices which are connected to server are having a specific file in this partition. 
+	
+	/etc: All configuration related to server and user application will be stored under this directory.
+			such are tomcat config, password files....
+	
+	/home: It's home directory for every user
+	
+	/media: if we have any media deive such as CD/DVD drive , pen drive, floppy. These all are accessable from this partiotion.
+	
+	/mnt: we can mount any file (NFS or any file share) to the server. we can mount any file/device which should have file system, all these can be avilable from this partiotion.
+	
+	/opt: It can keeps the third party application data.
+	
+	/tmp: Every user using linux machine have a chance to create a folder without any issue. Even other user can see the content, except deletion.
+	
+	/usr: This partition contains all user executables, what ever the program if it's executing by the user then corresponding file should be located /usr partition. 
+			such as uname, it's a executable command. it's code is located under /usr/bin directory.
+			run-->which uname
+				  which git
+	
+	/var: the content which is keeps varies from time to time then those data can be available in this partition. such as logs, logfiles, since these files are keep updated from time to time.
+	
+	/proc /run /srv /sys /dev: These drives conatins data only if server is up and running. It won't maintain any persistant storage for any data.
+								Also /proc can hold the live information about the system
+								cat /proc/cpuinfo
+								cat /proc/meminfo
+								cat /proc/version
+
+###################   Standard file Descriptors #################################
+cat /etc/redhat-release > filename
+cat /etc/redhat-release 1> filename
+		Both notations are same. 1 represents standard output
+		cat /etc/redhat-release >> /var/tmp/system_info
+		ls -l /root/apple > /var/tmp/error
+		   Actually no such file "apple" presents in /root dir, so it generates an error. But we redireccted it into successful output file.
+		   so no info will stored under /var/tm/error file. 
+		   to redirect any errors we have to mention "2>"
+		 ls -l /root/apple 2> /var/tmp/error.
+		 If file apple1 already existed.
+		 ls -l /root/apple1 > error_file  --> Now the output will redirected to filr error_file. since apple1 is presence.
+		 ls -l /root/apple3 > error_file 2>&1 ---> This will redirect both output and error.
+		 
+###############################  Hard and Soft link #####################################
+
+ln --help
+soft link ---> short cut (symlink)
+
+soft link: is a shortcut for any file/directory. 
+ln -s <source path> <destpath> --->  creating soft link.
+ln <source path> <destpath>  -----> creating hard link.
+these links are working based upon the inodes( a unique identifier , unix file system can create to identify the files)
+
+		root@ubuntu-vm:~/ubuntu# ls -li
+		total 24
+		14417926 drwxr-xr-x 2 root root 4096 Nov 12 09:38 apple1
+		14417930 drwxr-xr-x 2 root root 4096 Nov 12 09:38 apple2
+		14417931 drwxr-xr-x 2 root root 4096 Nov 12 09:38 apple3
+		14417932 -rw-r--r-- 1 root root  371 Nov 12 09:45 error
+		14417933 -rw-r--r-- 1 root root    8 Nov 12 09:55 file1
+		14417934 -rw-r--r-- 1 root root   14 Nov 12 09:55 file2
+		14417936 lrwxrwxrwx 1 root root   17 Nov 12 10:06 font -> /boot/grub/fonts/
+		14417935 lrwxrwxrwx 1 root root   19 Nov 12 10:04 grub -> /boot/grub/grub.cfg
+		root@ubuntu-vm:~/ubuntu# ls -li /boot/grub/
+total 2404
+14680067 -rw-r--r-- 1 root root     191 Sep 15  2021 default
+14680355 drwxr-xr-x 2 root root    4096 Sep 20  2021 fonts
+14680072 -rw-r--r-- 1 root root     712 Sep 20  2021 gfxblacklist.txt
+14680075 -r--r--r-- 1 root root    8322 Nov 12 09:41 grub.cfg
+14680357 -rw-r--r-- 1 root root    1024 Nov 12 09:32 grubenv
+14680077 drwxr-xr-x 2 root root   12288 Sep 20  2021 i386-pc
+14680078 drwxr-xr-x 2 root root    4096 Sep 20  2021 locale
+14680364 -rw-r--r-- 1 root root    4716 Nov 12 09:41 menu.lst
+14680074 -rw-r--r-- 1 root root    4252 Nov 12 09:41 menu.lst~
+14680073 -rw-r--r-- 1 root root 2397557 Sep 20  2021 unicode.pf2
+
+for soft links inode number will vary from file to file. But when you create hardlink, it carries same inode number as it have from original.
+Also if we remove original (source file), then no use with soft link file that we have created. 
+But in hardlink it's different. when we remove original file(source file), there won't be any impact with hard link file. Because it using same inode number, content is reamins same with hard link file.
+
+#############################   Hardware info  ############################################
+dmidecode:for getting BIOS, Hardware info, RAM ,RAM, CPU. Which slot for RAM has occupied. we can get free slot info from Physical servers with this command without visiting datacentre.
+lspci: attached pci devices for server.
+lsblk: Can get the disck info
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+sda      8:0    0  500G  0 disk
+├─sda1   8:1    0    1G  0 part /boot
+├─sda2   8:2    0  236G  0 part /
+├─sda3   8:3    0    9G  0 part [SWAP]
+├─sda4   8:4    0    1K  0 part
+└─sda5   8:5    0  254G  0 part /home
+sr0     11:0    1 1024M  0 rom
+
+[root@centos-vm ~]# ll /dev/sda*
+
+brw-rw----. 1 root disk 8, 0 Nov 13 02:52 /dev/sda
+brw-rw----. 1 root disk 8, 1 Nov 13 02:52 /dev/sda1
+brw-rw----. 1 root disk 8, 2 Nov 13 02:52 /dev/sda2
+brw-rw----. 1 root disk 8, 3 Nov 13 02:52 /dev/sda3
+brw-rw----. 1 root disk 8, 4 Nov 13 02:52 /dev/sda4
+brw-rw----. 1 root disk 8, 5 Nov 13 02:52 /dev/sda5
+
+lscpu: we can get the cpu info. 
+lsusb:
+
+ALternatives for this /proc/cpuinfo , /proc/meminfo.
+
+###############    Editors #######################
+
+vi:
+	Insert: i
+	write: esc->:->w->enter
+	quite: esc->:->q!->enter
+	write & quite: esc->:->wq->enter
+	copy: keep cursor from the line where we have to copy-> press esc ->press number of lines wish to copy -> press 'yy'.
+	paste: press esc-> press 'p'.
+	delete: keep cursor from the line where we have to copy-> press esc ->press number of lines wish to copy -> press 'dd'.
+	replace context: press esc-> then press ':' -> press '%s/source pattren/new pattren"
+	undo -> press esc -> press 'u'. for undo the changes before quite/save.
+	seeting number for each line: press esc->press ':' -> type 'set nu' -> enter.
+	
+	
+###################### Other commands   ###################
+
+man  <command name>  -> Manual for commands.
+history -> history
+All the manual docs are stored under /usr/share/doc/
+	ex: cat /usr/share/doc/redhat-release/GPL.
+locate: from which location the binaries are executing.
+	locate useradd
+which: it's is used to locate the executable location.
+	which git, which useradd,
+echo $PATH->
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+The meaning of above cmmand is, if we execute any command in linux, it will look for follwoing mentione locations to execute the code.
+we can customize this location.
+$SHELL
+$HOME
+$HOSTNAME
+$USER
+
+df -hPT -----> For letting us know the storage mount info. 
+
+[root@centos-vm /]# df -hPT
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  891M     0  891M   0% /dev
+tmpfs          tmpfs     909M     0  909M   0% /dev/shm
+tmpfs          tmpfs     909M  8.6M  900M   1% /run
+tmpfs          tmpfs     909M     0  909M   0% /sys/fs/cgroup
+/dev/sda2      xfs       236G  4.0G  232G   2% /
+/dev/sda5      xfs       254G  1.9G  253G   1% /home
+/dev/sda1      xfs      1014M  270M  745M  27% /boot
+tmpfs          tmpfs     182M     0  182M   0% /run/user/0
+tmpfs          tmpfs     182M     0  182M   0% /run/user/1003
+
+Among type 'xfs'  are very imp, since it's consider to be as actual storage mounts. 
+
+cat /proc/cpuinfo
+lspci
+dmesg 
+lsmod **********
+	modinfo <module name> ---> Module in linux is same as drivers in windows. which are needed for tuning the server performance.
+
+lsblk:
+
+This can display the storage / mount info.
+		[root@centos-vm ~]# lsblk
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+sda      8:0    0  500G  0 disk
+├─sda1   8:1    0    1G  0 part /boot
+├─sda2   8:2    0  236G  0 part /
+├─sda3   8:3    0    9G  0 part [SWAP]
+├─sda4   8:4    0    1K  0 part
+└─sda5   8:5    0  254G  0 part /home
+sr0     11:0    1 1024M  0 rom
+
+lsblk | grep disk
+
+blkid: to identify the UUID of each block attached to server
+
+[root@centos-vm ~]# blkid
+/dev/sda1: UUID="2fa5325a-f2a3-47cf-bffc-b6e98600c1b3" BLOCK_SIZE="512" TYPE="xfs" PARTUUID="83d904d3-01"
+/dev/sda2: UUID="e70d969d-6d1b-4a13-a485-abe4157b54e3" BLOCK_SIZE="512" TYPE="xfs" PARTUUID="83d904d3-02"
+/dev/sda3: UUID="c5ddc942-cbb3-4a0e-aa05-7e97fce528e6" TYPE="swap" PARTUUID="83d904d3-03"
+/dev/sda5: UUID="0d413d7b-973f-45bf-892b-8f6d4d73f3f8" BLOCK_SIZE="512" TYPE="xfs" PARTUUID="83d904d3-05"
+
+[root@centos-vm ~]# cat /etc/fstab
+
+#
+# /etc/fstab
+# Created by anaconda on Sun May  9 00:33:05 2021
+#
+# Accessible filesystems, by reference, are maintained under '/dev/disk/'.
+# See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info.
+#
+# After editing this file, run 'systemctl daemon-reload' to update systemd
+# units generated from this file.
+#
+UUID=e70d969d-6d1b-4a13-a485-abe4157b54e3 /                       xfs     defaults        0 0
+UUID=2fa5325a-f2a3-47cf-bffc-b6e98600c1b3 /boot                   xfs     defaults        0 0
+UUID=0d413d7b-973f-45bf-892b-8f6d4d73f3f8 /home                   xfs     defaults        0 0
+UUID=c5ddc942-cbb3-4a0e-aa05-7e97fce528e6 none                    swap    defaults        0 0
+
+we can mount the valid formatted drive/folder to any directries. 
+
+lsblk --> check the available mounts
+df -HPT ---> can give us the exact path for each mount point.
+
+mount /dev/sda1 /data --> now sda1 mount point is connected to dir data. Now all the content from /dev/sda1 is now avalable under /data (ls -l /data). Initially this mount is associated with /boot drive. All these files areset under /data.
+
+we can unmount easily.
+
+umount /data
+
+
+####################   User Administration    ###########################################
+VIdeo (Day2:Linux) -30 mins(6:31:27)
+
+useradd: Adding new user
+passwd: setting password for user
+cat /etc/passwd
+
+each user in linux have following properties:
+	Name, password, uid, gid,home directory, bash
+useradd -D ---> it gives you the default values that each user in server holds.
+GROUP=100
+HOME=/home
+INACTIVE=-1
+EXPIRE=
+SHELL=/bin/bash
+SKEL=/etc/skel    -->IMP
+CREATE_MAIL_SPOOL=yes
+
+Create user 'user1' and verify the values such as $HOME, $SHELL.
+Also look for user entry in /etc/passwd directory.
+
+If we wish to extract uid , gid info then we can use command 'id <user-name>'.
+
+default SKEL for user id can get from 'useradd -D'. 
+when we look into this /etc/skel directory, it contains some files (usually starts with .). These files will be reflected for all user's home directory.
+
+[user1@centos-vm ~]$ ls -la
+total 12
+drwx------. 2 user1 user1  62 Nov 14 09:32 .
+drwxr-xr-x. 5 root  root   43 Nov 14 09:32 ..
+-rw-r--r--. 1 user1 user1  18 Jul 21  2020 .bash_logout
+-rw-r--r--. 1 user1 user1 141 Jul 21  2020 .bash_profile
+-rw-r--r--. 1 user1 user1 376 Jul 21  2020 .bashrc
+
+Files .bash_logout,.bash_profile and .bashrc will be created default for all users in server. Since these files are located under /etc/skel. 
+cat /etc/shadow --> This can give you the user info (user name, password, some of it's properties) will be encrypted.
+cat /etc/	
+
+
+
+################     editors (vi)        ############################
+
+i  ----> Insert mode 
+a  ----> insert mode + edit text from next letter onwards
+A  ----> insert mode + Cursor move to end of line 
+I  ----> insert mode + cursor move to starting line of the context.
+
+:q ---> for quite
+:q! ----> quite forcefully , nothing will saved even after wriiting soething.
+:w ----> writing data into file
+:wq ----> write and quite. 
+shift+o --> insrt mode + creating new line top of it. 
+:w location/file_name ---> this will create a new file in the name that we have mention.
+:e! -----> discard the changes from the file without saving anything that we have written. 
+:sh ----> while wring data if we wanna go back to terminal ,then we can use this. After this press ctrl+d to go back to file where we stopped. 
+:x ----> removing chars from right side
+:shift+x ---> removing chars from left side
+:dw ---> deleting word from present cursor (deleting words)
+:dd ---> delete the cursor line
+:shift+d ---> delete part of line from part of right of cursor.
+d+G ---> Removing all the line towards end of line from current cursor. ( deleting cursor to end of file)
+d+1+G ---> removing all the lines towards to starting of the file from cursor point. 
+:set nu: printing line numbers in file
+:11,15d ---> removing lines from 11 to 15th line in file.
+shift+g ----> moving cursor to end of the line in the file
+1+shift+g ---> moving cursor to first line of the file.
+shift+l ---> lower part of the pages
+shift+h ----> top part of the pages
+shift+m ----> cursor moving the middle part of the page. 
+cc -----> removing current line and entering into insert mode.
+C -----> deleting context from line and entering into insert mode
+J -----> Joining 2 lines
+u -----> undo the changes even it's written.
+yy ----> copy the content from the line 
+p -----> paste the content
+5yy ----> copying 5 lines of context from the cursor
+1,5 co 12 ---> copy lines from 1 to 5 and paste them after line number 12.
+17 m 10 ---> move the line 
+:set nonu ----> for removing numbers from lines.
+/ or ? string: for searching for the string in file. Press n for top to bottom and press N for bottom to top. 
+:s/oldtext/newtext ---> replace text in one phrase.
+:s/oldtext/newtext/g ----> replace text in entire line. 
+:%s/oldtext/newtext ----> replacing text in entire file. 
+
+
+###################   Group Management    ############################
+
+Keeping a kind of users in one group, so every user in on group have uniform permissions. 
+Default user's group name as user name/id. It's referred as Primary Group. 
+
+[root@centos-vm ~]# cat /etc/passwd | grep user1
+user1:x:1002:1002::/home/user1:/bin/bash
+
+Fourth field in the above line consider as group id. we can get it's name from follwing command.
+
+[root@centos-vm ~]# cat /etc/group | grep 1002
+user1:x:1002:
+
+From above output we will come to know the associated group for id '1002' is 'user1'. 
+
+[root@centos-vm ~]# id user1
+uid=1002(user1) gid=1002(user1) groups=1002(user1)
+
+groupadd <name of the group>
+gpasswd -a <name od the user> <name of the group> --> for adding user to purticular group.
+groups <name of user> --> it can list name od the groups that user is belongs to.
+
+lslogins <username> --> this can lists useful onformation.
+
+usermod: we can change properties of user such as Home dir, shell, primary group..
+man usermod--> manual
+usermod --help.
+
+usermod -g globaladmins -G manager,hr,sysadmins -c "This is service account" -s /bin/sh user1
+
+Above command can change it's properties such as -g : changing primary group memebership, -G: supplementary groupmenbership, -c: comments -s: changing shell.
+
+Then run --> lslogins -u user1.  --> we cab notice the changes.
+
+groups user1 ---> list all the groups that user belong.
+
+userdel <username>  ---> user can delete from the server, but home directories are remains same.
+userdel -r <username> ---> can delete user along with home dir as well.
+
+Note: While deleting user from server, user account shoud be removed from all associated groups. (groups <username>, gpasswd -d <username> <groupname>).
+
+chage -l <username> ---> This can change the password expire info. 
+groupdel <group name> --> Removing group, prior to this all the users associated in this group should be removed.
+
+
+############################    grep      #########################
+
+grep <context> <file location> or cat <file location> | grep <context>
+grep <context> -i <file location> or cat <file location> | grep -i <context>
+grep -E '<contx1>|<contex2>|<contex3>' <file location>
+grep -Ei '<contx1>|<contex2>|<contex3>' <file location>
+grep '^contex' <filelocation> --> context starts with.
+grep -i '^contex' <filelocation>
+grep 'context$' <filelocation> ---> lines which are end with context
+grep '[0-9]' <filelocation> ---> Lines which contains numbers
+grep '^[0-9]' <filelocation> ---> Lines which contains numbers --> Lines are starts with numbers.
+
+
+############################   Compress / Archieve   ######################
+
+du -sh <file / dir > **********  IMP  **********
+ 
+gzip -c /var/log/messages >/tmp/test/message.gz
+
+[root@centos-vm ~]# du -sh /var/log/messages
+3.4M    /var/log/messages
+[root@centos-vm ~]# du -sh /tmp/test/message.gz
+580K    /tmp/test/message.gz
+
+bzip2 -c /var/log/messages >/tmp/test/message.bz2
+[root@centos-vm ~]# du -sh /tmp/test/message.*
+212K    /tmp/test/message.bz2
+580K    /tmp/test/message.gz
+
+
+tar is used for archieve the multiple files. it's not for designed for comress. for this we cab use any of the available options sucha as gzip,bzip2,xz ....
+
+tar -cvf /tmp/test/log.tar /var/log/
+
+[root@centos-vm ~]# du -sh /var/log/
+12M     /var/log/
+[root@centos-vm ~]# du -sh /tmp/test/log.tar
+12M     /tmp/test/log.tar
+
+as we can see both the files are have same size. Now we can compress this file using gzip,bzip2
+
+tar -czvf /tmp/test/log.tar.gz /tmp/test/log.tar
+[root@centos-vm ~]# du -sh /tmp/test/log.*
+12M     /tmp/test/log.tar
+1.4M    /tmp/test/log.tar.gz
+
+tar -cJvf /tmp/test/log.tar.xz /tmp/test/log.tar
+[root@centos-vm ~]# du -sh /tmp/test/log.*
+12M     /tmp/test/log.tar
+1.4M    /tmp/test/log.tar.gz
+508K    /tmp/test/log.tar.xz
+
+
+tar -xvf /tmp/test/log.tar -C /tmp/test/dir1  ---> for coming out from archieve to diff directory.   
+
+######################     Networking  #####################################
+
+ifconfig --> can get the ip info of nics
+ip a ---> it can let us know the status of connected nics, along with ip info.
+route -n --> for which gateway the traffic has been routed.
+ethtool <nic-name>: Here we have to notice the spped, duplex, Link Detected fields.
+
+cat /etc/sysconfig/network-scripts/ifcfg-enp0s3  ---> From here we can change the configuration of nic such as Static, gateway, 
+
+
+#############   Permissions  #########################
+
+PATH=$PATH:/data
+echo $PATH
+Same we can do it by editing the 
+
+chmod 777 file1 ---> it can grant full control(Read,Write and Execute) for file1 for owner,group,others.
+
+R-4
+W-2
+X-1.
+
+chmod 755 file2. 
+ls -l file2
+Only root can the permissions for all files.
+
+chmod u+rwx,g+rx,o+rx file1
+chmod o-rx file1
+
+
+Execute permission is required for Directories, shell/bash scripts, for any binaries. if we not grant the execute permission for these then that file can't be executed. 
+
+chown  <username> <file name>
+
+chown -R <username>:<groupname> <folder name>  ----> Change the permissions recurssively for all files reside the folder.
+
+chown  <username>:<groupname> <file name> ----> to change the ownership for a file, 
+
+set uid---> append digit 4 while assigning the permissions for a file
+
+chmod 4755 file1 
+chmod u+s file1
+chmod 0755 file1
+chmod u-s file1
+
+set gid --->group ownership can effect with this 
+
+stickybit permission----> any one can write the data they want, but deletion can be done only by the owner of the file/dir
+
+chmod 1777 dir1 ---> should give full permission for all. with this even though granted full control for other users. still they can't delete the files due to this feature.
+we can use this for most of tmp directories. 
+
+chmod +t <dir-name> 
+chmod -t <dir-name>
+
+[root@centos-vm /]# ls -ld /tmp/
+drwxrwxrwt. 13 root root 242 Nov 23 10:16 /tmp/
+[root@centos-vm /]# ls -ld /var/tmp/
+drwxrwxrwt. 5 root root 144 Nov 23 09:22 /var/tmp/
+
+
+Here we can notice the 't' on permissions tab.
+
+umask: for root it's 0022 for other users it is 0002. 
+
+root: file permissions: 666-644=022
+	  directory permissions: 777-755=022
+other users: file-> 666-664=002
+			 dir --> 777-775=002
+
+
+Giving sudo permissions for user----> gpasswd -a <username> wheel
+After adding user to group 'wheel' user will get sudo permissions. 
+
+check it by--> grep wheel /etc/group
+			   id <user-name> 
+we can perform same from the following file:
+
+			vi /etc/sudoers ---> edit the file by entering user names in listed groups such as root,sys,wheel....
+
+
+
+	
+	
+	28-02-23
+	
+	Devops:
+	https://www.youtube.com/watch?v=sbPujz8QFGQ&list=PL4_vx17AgknMJaVn0LTg-OZIhYNIBrigo&index=2

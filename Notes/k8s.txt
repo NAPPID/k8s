@@ -1,0 +1,45 @@
+
+
+kubectl run mycont1 --rm -it --image busybox -- sh
+kubectl version --short
+chkconfig kubelet on ----> This will keep service on any run levels. 
+
+kubectl get pods -n kube-system -o wide ---> for wide range of information. 
+kubectl get pods --all-namespaces ---> For all pods including default
+kubectl get pods -n <name of namespace> ---> pods from respective name space
+kubectl get pods -n kube-system ---> default pods from "kube-system" namespace.
+kubectl get pod testpod -o yaml or json
+kubectl get pods -l label=
+kubects logs <pod name>
+
+kubectl explain pod.spec.containers
+kubectl explain pod  ---> This like a MAN pages in Linux. It will explain about the pods. 
+
+
+kubectl describe <object> instancename ----> kubectl describe pod testpod --->this command will let us know the everything about pod, including events or logs. 
+this is used to troubleshoot the pods.  
+
+kubectl api-versions ----> List all supported api versions, some times new features will keep on added. In those cases, we have to keep focus on them untill they marked as stable version.
+
+kubectl api-resources -o wide  --->List all supported object's API version. 
+
+kubectl explain pod ---> explain the what is pod (any k8s object). 
+
+kubectl exec -it testpod -- bash ---> to get into the pod. 
+
+###############################  Replication Controller      ##########################################################
+
+ReplicationController: It's an another object in K8s. Normal pod manifest file an create pod and run our application. But what if this pod down, we don't have any replica. 
+so we can't access it. over come this we can use replica set, here we can deploy multiple pods and each pod can run same application.
+
+At any point of time if any pod is down, automatially it will create new one and keep maintain the desired number of pods as defined in manifest. 
+
+But it's not fair to access app using pod ips, since we have n number of pods, so which one we have to use. to overcome this it's recommended to use LoadBalancers. 
+
+kubectl scale rc <name of rc> --replicas=5  
+
+kubectl get rc
+
+kubectl edit rc <name of rc>  ----> we can edit the number of replicas that we need. this is on fly we can update rc object directly. 
+
+same way we can do scaleup and scale down. 

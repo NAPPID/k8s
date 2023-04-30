@@ -1,0 +1,23 @@
+
+git config --global user.name "mungaras783"
+git config --global user.email "official email"
+git config --global push.default "simple"
+git clone <source-centralrepo> <dest-localrepo> (default location is current dir)
+after couple of updates to current working directory run following command
+git status
+if we notice any untracked files, then run
+untracking--->staging--->commit changes
+git add . (taking all the files from current working directory)
+git status
+git commit -m "message", it's best practice to have a UserStory, Ticket# in commit message.
+.git folder contains repo folder, snap shots. it's a hidden folder
+git log (shows all commits from current working directory/repo)
+git log -number ('1' represents latest commit)
+git log --oneline (short desciption of commits)
+git log --oneline -1
+git show <commit-Id> (what differ between previous and current versions)
+git never consider empty folders.
+git push (pushing the changes from local to central repo)
+git clone <source-repo> destination-folder----> this will create another workspace and then we can edit the date. push them to central repo.
+git pull (Pulling the changes which were done by team mates/ sync or update repo)
+  
