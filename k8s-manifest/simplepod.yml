@@ -10,4 +10,4 @@ metadata:
 spec:
   containers:
    - name: container2
-     image: busybox
+     image: nginx
