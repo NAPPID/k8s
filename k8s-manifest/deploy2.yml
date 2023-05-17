@@ -1,0 +1,33 @@
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: deploy-obj
+ labels:
+  app: nginx
+  role: dev
+  location: India
+spec:
+ replicas: 6
+ minReadySeconds: 10
+ strategy:
+  type: RollingUpdate
+  rollingUpdate:
+   maxSurge: 1
+   maxUnavailable: 1
+ selector:
+  matchLabels:
+   role: dev
+ template:
+  metadata:
+   name: deploy-pod
+   labels:
+    role: dev
+  spec:
+   containers:
+    - name: deploy-cont
+      image: nginx:1.16
+      ports:
+       - containerPort: 80
+
