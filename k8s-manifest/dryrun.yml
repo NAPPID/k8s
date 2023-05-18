@@ -15,4 +15,5 @@ spec:
 status: {}
 
 
-## This is a simple pod file generated from dry run command
+## This is a simple pod file generated from dry run command 
+## Adding second line using root user
