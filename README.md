@@ -6,6 +6,7 @@ Have a seperate host file in a folder and update host pattrens along with host I
 Also have config file, update the config data. 
 
 
+
 Some useful commands: 
 
 kubectl get pods
