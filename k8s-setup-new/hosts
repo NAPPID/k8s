@@ -1,0 +1,14 @@
+
+[k8s-master]
+xx.xxx.xxx.xxx
+
+[k8s-nodes]
+xx.xx.xxx.xxx
+xx.xxx.xxx.xx
+
+[k8s:children]
+k8s-master
+k8s-nodes
+
+[k8s:vars]
+ansible_python_interpreter=/usr/bin/python3
