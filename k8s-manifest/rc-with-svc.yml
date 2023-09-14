@@ -1,0 +1,39 @@
+
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+ name: nginx-rc
+ labels:
+  ENV: Dev
+  app: myapp
+spec:
+ replicas: 2
+ selector:
+  ENV: Dev
+ template: 
+  metadata:
+   name: nginx-pod
+   labels:
+    ENV: Dev
+  spec:
+   containers:
+    - name: nginx-con
+      image: index.docker.io/sreeharshav/testcontainer:v1
+      ports:
+       - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: nginx-svc
+ labels:
+  app: test-container
+spec:
+ type: NodePort
+ selector:
+  ENV: Dev
+ ports:
+  - port: 8000
+    targetPort: 80

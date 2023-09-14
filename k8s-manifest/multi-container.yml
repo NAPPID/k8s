@@ -1,0 +1,22 @@
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: httpd-pod1
+  labels:
+    ENV: Dev
+spec:
+  containers:
+  - name: httpd-con2
+    image: index.docker.io/sreeharshav/rollingupdate:v1
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 80
+  - name: httpd-con3
+    image: index.docker.io/sreeharshav/rollingupdate:v1
+    ports:
+     - containerPort: 80
+
