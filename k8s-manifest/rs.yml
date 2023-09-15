@@ -1,0 +1,43 @@
+
+---
+apiVersion: apps/v1
+kind: ReplicaSet 
+metadata:
+ name: replica-set
+ labels:
+  type: testing-rs
+spec:
+ replicas: 3
+ selector:
+  matchLabels:
+   ENV: Dev
+  matchExpressions:
+   - {key: tier, operator: In, values: [frontend]}
+ template:
+  metadata:
+   name: rs-pod
+   labels:
+    ENV: Dev
+    tier: frontend
+  spec:
+   containers:
+    - name: rs-con1
+      image: index.docker.io/sreeharshav/rollingupdate:v1
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: rs-service
+ labels:
+  type: rs-svc
+spec:
+ type: NodePort
+ selector:
+  ENV: Dev
+ ports:
+  - port: 8000
+    targetPort: 80
+
+
