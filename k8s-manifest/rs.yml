@@ -4,6 +4,7 @@ apiVersion: apps/v1
 kind: ReplicaSet 
 metadata:
  name: replica-set
+ namespace: myns
  labels:
   type: testing-rs
 spec:
@@ -22,7 +23,7 @@ spec:
   spec:
    containers:
     - name: rs-con1
-      image: index.docker.io/sreeharshav/rollingupdate:v1
+      image: sreeharshav/testcontainer:v1
 
 
 ---
