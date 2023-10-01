@@ -35,7 +35,7 @@ spec:
          exec:
            command:
              - "cat"
-             - "/tmp/health"
+             - "/etc/passwd"
          initialDelaySeconds: 10
          periodSeconds: 5
          timeoutSeconds: 20
@@ -45,7 +45,7 @@ spec:
          exec:
            command:
              - "cat"
-             - "/tmp/health"
+             - "/etc/passwd"
          initialDelaySeconds: 30
          periodSeconds: 10
          successThreshold: 1
@@ -61,10 +61,10 @@ metadata:
   labels:
    role: dev
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
           #role: dev
     app: nginx
   ports:
-  - port: 7000
+  - port: 80
     targetPort: 80

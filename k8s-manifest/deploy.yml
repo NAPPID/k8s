@@ -5,8 +5,7 @@ kind: Deployment
 metadata:
  name: deployobj
  labels:
-   app: nginx
-   env: test
+   role: dev
 spec:
  replicas: 3
  selector:
